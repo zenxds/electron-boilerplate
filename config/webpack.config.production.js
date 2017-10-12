@@ -1,0 +1,104 @@
+const path = require('path')
+const moment = require('moment')
+const webpack = require('webpack')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
+
+const rules = require('./webpack.rules')
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    path: path.join(__dirname, '../build'),
+    filename: 'renderer.js',
+    chunkFilename: '[name].[hash].js'
+  },
+  target: 'electron-renderer',
+  resolve: {
+    alias: {
+      component: resolve('component'),
+      util: resolve('util'),
+      less: resolve('less')
+    }
+  },
+  module: {
+    rules: rules.concat([{
+        test: /\.jsx?$/,
+        loader: ['babel-loader'],
+        exclude: /node_modules/
+      },
+      {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract([
+          {
+            loader: 'css-loader',
+            options: {
+              minimize: true
+            }
+          }
+        ])
+      },
+      {
+        test: /\.less$/,
+        exclude: /(node_modules|antd)/,
+        loader: ExtractTextPlugin.extract([
+          {
+            loader: 'css-loader',
+            options: {
+              minimize: true
+            }
+          },
+          {
+            loader: 'less-loader',
+            options: {
+              relativeUrls: false
+            }
+          }
+        ])
+      },
+      {
+        test: /antd\.less$/,
+        loader: ExtractTextPlugin.extract([
+          {
+            loader: 'css-loader',
+            options: {
+              minimize: true
+            }
+          },
+          {
+            loader: 'less-loader',
+          }
+        ])
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/,
+        use: [
+          'url-loader?limit=8192&name=image/[hash].[ext]'
+        ]
+      }
+    ])
+  },
+  plugins: [
+    new WebpackCleanupPlugin({
+      exclude: []
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+      'API_SERVER': JSON.stringify('http://localhost:8888')
+    }),
+    new webpack.ProvidePlugin({
+      'React': 'react'
+    }),
+    new ExtractTextPlugin({
+      disable: false,
+      allChunks: true,
+      filename: '[name].css'
+    }),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.BannerPlugin(`${moment().format('YYYY-MM-DD HH:mm:ss')}`)
+  ]
+}
+
+function resolve(dir) {
+  return path.resolve(__dirname, `../src/${dir}`)
+}
