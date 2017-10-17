@@ -1,13 +1,14 @@
 {
   "name": "electron-app",
+  "productName": "ElectronAPP",
   "version": "1.0.0",
   "description": "An Electron Application",
   "main": "main.js",
   "scripts": {
     "build:dev": "BABEL_ENV=dev webpack-dev-server -w --port 8888 --env=dev",
     "build:prod": "BABEL_ENV=production webpack --env=production",
-    "start": "electron .",
-    "pack": "electron-packager . --package-manager=cnpm --out=release --overwrite"
+    "start": "ELECTRON_ENV=dev electron .",
+    "pack": "electron-packager . --out=release --overwrite"
   },
   "repository": "",
   "keywords": [],
@@ -39,7 +40,8 @@
     "url-loader": "^0.6.2",
     "webpack": "^3.6.0",
     "webpack-cleanup-plugin": "^0.5.1",
-    "webpack-dev-server": "^2.9.1"
+    "webpack-dev-server": "^2.9.1",
+    "webpack-monitor": "^1.0.11"
   },
   "dependencies": {
     "antd": "^2.13.4",

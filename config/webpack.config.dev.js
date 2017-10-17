@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
+const WebpackMonitor = require('webpack-monitor')
 
 const devPort = 8888
 
@@ -69,12 +70,16 @@ module.exports = {
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    new WebpackMonitor({
+      capture: true,
+      launch: true
+    }),
     new webpack.ProvidePlugin({
       'React': 'react'
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('dev'),
-      'API_SERVER': JSON.stringify('http://localhost:8888')
+      'API_SERVER': JSON.stringify(`http://localhost:${devPort}`)
     })
   ],
   devServer: {

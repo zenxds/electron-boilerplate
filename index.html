@@ -9,19 +9,29 @@
 
     <script>
       function loadScript(url) {
-        const s = document.createElement("script")
+        const node = document.createElement("script")
 
-        s.charset = 'utf-8'
-        s.async = true
-        s.src = url
+        node.charset = 'utf-8'
+        node.async = true
+        node.src = url
         document.head.appendChild(s)
       }
 
+      function loadCss(url, callback) {
+        const node = document.createElement('link')
+
+        node.charset = 'utf-8'
+        node.rel = 'stylesheet'
+        node.href = url
+        document.head.appendChild(node)
+      }
+
       // You can also require other files to run in this process
-      if (process.env.NODE_ENV == "production") {
-        require('./build/renderer.js')
-      } else {
+      if (process.env.ELECTRON_ENV == "dev") {
         loadScript('http://localhost:8888/renderer.js')
+      } else {
+        loadCss('./build/main.css')
+        require('./build/renderer.js')        
       }
     </script>
   </body>
