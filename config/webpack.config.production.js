@@ -14,17 +14,12 @@ module.exports = {
   },
   target: 'electron-renderer',
   resolve: {
-    alias: {
-      component: resolve('component'),
-      util: resolve('util'),
-      less: resolve('less')
-    }
+    modules: ['node_modules', 'src']
   },
   module: {
     rules: rules.concat([{
         test: /\.jsx?$/,
-        loader: ['babel-loader'],
-        exclude: /node_modules/
+        loader: ['babel-loader']
       },
       {
         test: /\.css$/,
@@ -70,7 +65,7 @@ module.exports = {
         ])
       },
       {
-        test: /\.(png|jpe?g|gif)$/,
+        test: /\.(png|jpe?g|gif|svg)$/,
         use: [
           'url-loader?limit=8192&name=image/[hash].[ext]'
         ]
@@ -97,8 +92,4 @@ module.exports = {
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.BannerPlugin(`${moment().format('YYYY-MM-DD HH:mm:ss')}`)
   ]
-}
-
-function resolve(dir) {
-  return path.resolve(__dirname, `../src/${dir}`)
 }

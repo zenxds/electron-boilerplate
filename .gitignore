@@ -66,4 +66,3 @@ typings/
 package-lock.json
 tsconfig.json
 release
-monitor

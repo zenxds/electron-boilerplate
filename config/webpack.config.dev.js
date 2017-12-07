@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
-const WebpackMonitor = require('webpack-monitor')
 
 const devPort = 8888
 
@@ -19,11 +18,7 @@ module.exports = {
   },
   devtool: 'cheap-module-eval-source-map',
   resolve: {
-    alias: {
-      component: resolve('component'),
-      util: resolve('util'),
-      less: resolve('less')
-    }
+    modules: ['node_modules', 'src']
   },
   module: {
     rules: rules.concat([
@@ -62,7 +57,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.(png|jpe?g|gif)$/,
+        test: /\.(png|jpe?g|gif|svg)$/,
         use: 'url-loader?limit=8192&name=image/[hash].[ext]'
       }
     ])
@@ -70,10 +65,6 @@ module.exports = {
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new WebpackMonitor({
-      capture: true,
-      launch: true
-    }),
     new webpack.ProvidePlugin({
       'React': 'react'
     }),
@@ -94,8 +85,4 @@ module.exports = {
       })
     }
   }
-}
-
-function resolve(dir) {
-  return path.resolve(__dirname, `../src/${dir}`)
 }
