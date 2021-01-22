@@ -1,7 +1,7 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
         "targets": {
           "browsers": ["last 2 versions"]
@@ -9,32 +9,39 @@
         "modules": false
       }
     ],
-    "react"
+    "@babel/preset-react",
+    "@babel/preset-typescript"
   ],
   "env": {
-    "dev": {
+    "development": {
       "plugins": [
-        "transform-decorators-legacy",
-        "transform-class-properties",
-        "transform-object-rest-spread",
-        [
-          "import", { 
-            "libraryName": "antd"
+        ["@babel/plugin-proposal-decorators", { "legacy": true }],
+        ["@babel/plugin-proposal-class-properties", { "loose" : true }],
+        "react-hot-loader/babel",
+        ["react-css-modules", {
+          "webpackHotModuleReloading": true,
+          "handleMissingStyleName": "warn",
+          "generateScopedName": "[path][name]__[local]--[hash:base64:5]",
+          "filetypes": {
+            ".less": {
+              "syntax": "postcss-less"
+            }
           }
-        ],
-        "react-hot-loader/babel"
+        }]
       ]
     },
     "production": {
       "plugins": [
-        "transform-decorators-legacy",
-        "transform-class-properties",
-        "transform-object-rest-spread",
-        [
-          "import", { 
-            "libraryName": "antd"
+        ["@babel/plugin-proposal-decorators", { "legacy": true }],
+        ["@babel/plugin-proposal-class-properties", { "loose" : true }],
+        ["react-css-modules", {
+          "generateScopedName": "[hash:base64]",
+          "filetypes": {
+            ".less": {
+              "syntax": "postcss-less"
+            }
           }
-        ]
+        }]
       ]
     }
   }

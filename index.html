@@ -2,7 +2,12 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title></title>
+    <script>
+      if (process.env.ELECTRON_ENV !== "development") {
+        document.write(`<link rel="stylesheet" href="./dist/main.css">`)
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>
@@ -17,21 +22,11 @@
         document.head.appendChild(node)
       }
 
-      function loadCss(url, callback) {
-        const node = document.createElement('link')
-
-        node.charset = 'utf-8'
-        node.rel = 'stylesheet'
-        node.href = url
-        document.head.appendChild(node)
-      }
-
       // You can also require other files to run in this process
-      if (process.env.ELECTRON_ENV == "dev") {
-        loadScript('http://localhost:8888/renderer.js')
+      if (process.env.ELECTRON_ENV === "development") {
+        loadScript('http://127.0.0.1:' + (process.env.WEBPACK_PORT || 9005) + '/main.js')
       } else {
-        loadCss('./build/main.css')
-        require('./build/renderer.js')        
+        require('./dist/main.js')
       }
     </script>
   </body>

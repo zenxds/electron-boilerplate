@@ -1,45 +1,84 @@
+// https://www.maizhiying.me/posts/2017/03/01/webpack-babel-ie8-support.html
 const path = require('path')
 const moment = require('moment')
 const webpack = require('webpack')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin")
+
+const pkg = require('../package.json')
+const externals = {}
+
+Object.keys(pkg.dependencies).map(item => {
+  externals[item] = 1
+})
 
 const rules = require('./webpack.rules')
 module.exports = {
-  entry: './src/index.js',
+  mode: 'production',
+  entry: './src/index.tsx',
   output: {
-    path: path.join(__dirname, '../build'),
-    filename: 'renderer.js',
+    path: path.join(__dirname, '../dist'),
+    filename: 'main.js',
     chunkFilename: '[name].[hash].js'
   },
   target: 'electron-renderer',
+  externals: [
+    function(context, request, callback) {
+      if (externals[request]) {
+        callback(null, 'commonjs ' + request)
+      } else {
+        callback()
+      }
+    }
+  ],
   resolve: {
-    modules: ['node_modules', 'src']
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    modules: ['node_modules', 'src'],
+    alias: {
+      '@constants': resolve('constants'),
+      '@utils': resolve('utils'),
+      '@components': resolve('components'),
+      '@decorators': resolve('decorators'),
+    }
+  },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin(),
+      new OptimizeCSSAssetsPlugin({}),
+      new webpack.BannerPlugin(`${moment().format('YYYY-MM-DD HH:mm:ss')}`)
+    ]
   },
   module: {
     rules: rules.concat([{
-        test: /\.jsx?$/,
-        loader: ['babel-loader']
+        test: /\.(js|ts)x?$/,
+        use: ['babel-loader'],
+        exclude: /node_modules/
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract([
+        use: [
+          MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
-              minimize: true
+              modules: true,
+              localIdentName: '[hash:base64]'
             }
           }
-        ])
+        ]
       },
       {
         test: /\.less$/,
         exclude: /(node_modules|antd)/,
-        loader: ExtractTextPlugin.extract([
+        use: [
+          MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
-              minimize: true
+              modules: true,
+              localIdentName: '[hash:base64]'
             }
           },
           {
@@ -48,27 +87,33 @@ module.exports = {
               relativeUrls: false
             }
           }
-        ])
+        ]
       },
       {
         test: /antd\.less$/,
-        loader: ExtractTextPlugin.extract([
+        loader: [
+          MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
-            options: {
-              minimize: true
-            }
+            options: {}
           },
           {
             loader: 'less-loader',
+            options: {
+              relativeUrls: false,
+              javascriptEnabled: true
+            }
           }
-        ])
+        ]
       },
       {
-        test: /\.(png|jpe?g|gif|svg)$/,
-        use: [
-          'url-loader?limit=8192&name=image/[hash].[ext]'
-        ]
+        test: /\.(jpe?g|png|gif|svg)$/,
+        loader: 'url-loader',
+        options: {
+          // Inline files smaller than 10 kB (10240 bytes)
+          limit: 10 * 1024,
+          name: 'image/[hash].[ext]'
+        },
       }
     ])
   },
@@ -77,19 +122,18 @@ module.exports = {
       exclude: []
     }),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-      'API_SERVER': JSON.stringify('http://localhost:8888')
+      API_SERVER_PLACEHOLDER: JSON.stringify('')
     }),
     new webpack.ProvidePlugin({
       'React': 'react'
     }),
-    new ExtractTextPlugin({
-      disable: false,
-      allChunks: true,
+    new MiniCssExtractPlugin({
+      chunkFilename: '[name].[hash].css',
       filename: '[name].css'
-    }),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin(),
-    new webpack.BannerPlugin(`${moment().format('YYYY-MM-DD HH:mm:ss')}`)
+    })
   ]
+}
+
+function resolve(p) {
+  return path.join(__dirname, '../src', p)
 }
