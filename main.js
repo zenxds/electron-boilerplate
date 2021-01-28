@@ -54,7 +54,7 @@ function toggleWindow() {
 }
 
 function createTray() {
-  tray = new Tray(path.join(__dirname, 'icons/tray/tray.png'))
+  tray = new Tray(path.join(__dirname, '../icons/png/32x32.png'))
 
   tray.on('click', toggleWindow)
 }
