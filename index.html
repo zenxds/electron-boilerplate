@@ -24,7 +24,7 @@
 
       // You can also require other files to run in this process
       if (process.env.ELECTRON_ENV === "development") {
-        loadScript('http://127.0.0.1:' + (process.env.WEBPACK_PORT || 9005) + '/main.js')
+        loadScript('http://0.0.0.0:' + (process.env.WEBPACK_PORT || 9005) + '/main.js')
       } else {
         require('./dist/main.js')
       }

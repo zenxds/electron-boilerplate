@@ -20,7 +20,7 @@ function createWindow () {
 
   // and load the index.html of the app.
   if (process.env.ELECTRON_ENV == "development") {
-    mainWindow.loadURL('http://127.0.0.1:' + (process.env.WEBPACK_PORT | 9005) + '/index.html')
+    mainWindow.loadURL('http://0.0.0.0:' + (process.env.WEBPACK_PORT | 9005) + '/index.html')
   } else {
     mainWindow.loadFile('index.html')
   }
@@ -54,7 +54,7 @@ function toggleWindow() {
 }
 
 function createTray() {
-  tray = new Tray(path.join(__dirname, '../icons/png/32x32.png'))
+  tray = new Tray(path.join(__dirname, 'icons/png/16x16.png'))
 
   tray.on('click', toggleWindow)
 }
