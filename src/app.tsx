@@ -1,5 +1,3 @@
-import { hot } from 'react-hot-loader/root'
-import { setConfig } from 'react-hot-loader'
 import React, { Component, ReactElement } from 'react'
 import {
   // BrowserRouter as Router
@@ -13,13 +11,14 @@ import './less/app.less'
 
 import Main from './containers/main'
 
-const App = () => (
-  <Router>
-    <Switch>
-      <Route path="/" component={Main} />
-    </Switch>
-  </Router>
-)
-
-setConfig({ logLevel: 'debug'})
-export default hot(App)
+export default class App extends Component {
+  render(): ReactElement {
+    return (
+      <Router>
+        <Switch>
+          <Route path="/" component={Main} />
+        </Switch>
+      </Router>
+    )
+  }
+}

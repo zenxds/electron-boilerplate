@@ -17,7 +17,7 @@
       "plugins": [
         ["@babel/plugin-proposal-decorators", { "legacy": true }],
         ["@babel/plugin-proposal-class-properties", { "loose" : true }],
-        "react-hot-loader/babel",
+        "react-refresh/babel",
         ["react-css-modules", {
           "webpackHotModuleReloading": true,
           "handleMissingStyleName": "warn",

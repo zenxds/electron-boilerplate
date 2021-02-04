@@ -1,11 +1,12 @@
 const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 const rules = require('./webpack.rules')
 module.exports = {
   mode: 'development',
-  entry: ['react-hot-loader/patch', './src/index.tsx'],
+  entry: './src/index.tsx',
   output: {
     path: path.join(__dirname, '../dist'),
     filename: 'main.js'
@@ -16,7 +17,6 @@ module.exports = {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     modules: ['node_modules', 'src'],
     alias: {
-      'react-dom': '@hot-loader/react-dom',
       '@constants': resolve('constants'),
       '@utils': resolve('utils'),
       '@components': resolve('components'),
@@ -85,6 +85,7 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new ReactRefreshWebpackPlugin(),
     new webpack.ProvidePlugin({
       'React': 'react'
     }),

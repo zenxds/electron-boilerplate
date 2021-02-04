@@ -66,9 +66,9 @@ app.on('ready', function() {
   createWindow()
   createTray()
 
-  if (process.platform === 'darwin') {
-    app.dock.hide()
-  }
+  // if (process.platform === 'darwin') {
+  //   app.dock.hide()
+  // }
 })
 
 // Quit when all windows are closed.
