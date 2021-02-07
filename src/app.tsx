@@ -9,6 +9,7 @@ import {
 import './less/antd.less'
 import './less/app.less'
 
+import paths from '@constants/paths'
 import Main from './containers/main'
 
 export default class App extends Component {
@@ -16,7 +17,7 @@ export default class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route path="/" component={Main} />
+          <Route path={paths.main} component={Main} />
         </Switch>
       </Router>
     )

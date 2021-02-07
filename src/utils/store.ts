@@ -30,12 +30,12 @@ export default class Store {
       return null
     }
 
-    let buffer = fs.readFileSync(this.path)
+    const buffer = fs.readFileSync(this.path)
     return JSON.parse(decrypt(buffer, this.password, this.iv).toString('utf8'))
   }
 
   public dump(data: any): void {
-    let buffer = Buffer.from(JSON.stringify(data))
+    const buffer = Buffer.from(JSON.stringify(data))
     fs.writeFileSync(this.path, encrypt(buffer, this.password, this.iv))
   }
 }

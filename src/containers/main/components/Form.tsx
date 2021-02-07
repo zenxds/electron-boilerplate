@@ -5,25 +5,17 @@ import { FormComponentProps } from 'antd/lib/form/Form'
 
 const formItemLayout = {
   labelCol: {
-    xs: { span: 24 },
-    sm: { span: 8 }
+    span: 8
   },
   wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 16 }
+    span: 16
   }
 }
 
 const tailFormItemLayout = {
   wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0
-    },
-    sm: {
-      span: 16,
-      offset: 8
-    }
+    span: 16,
+    offset: 8
   }
 }
 

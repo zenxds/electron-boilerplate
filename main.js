@@ -10,8 +10,8 @@ let tray = null
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 450,
-    height: 680,
+    width: 580,
+    height: 500,
     icon: path.join(__dirname, 'icons/icon.png'),
     webPreferences: {
       nodeIntegration: true

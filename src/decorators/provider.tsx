@@ -1,4 +1,4 @@
-import React, { ComponentClass, Component, ReactElement } from 'react'
+import React, { Component, ReactElement } from 'react'
 import { Provider } from 'mobx-react'
 
 export function provider(injectData: any = {}): (arg: IReactComponent) => any {
