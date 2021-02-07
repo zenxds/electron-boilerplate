@@ -14,7 +14,7 @@ yarn start
 
 ```
 yarn build:prod
-yarn pack:mac
+yarn dist
 ```
 
 ## icons
