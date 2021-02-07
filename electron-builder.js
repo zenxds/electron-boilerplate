@@ -4,6 +4,12 @@ module.exports = {
   directories: {
     output: 'release'
   },
+  // "publish": [
+  //   {
+  //     "provider": "generic",
+  //     "url": "http://**.**.**.**:3002/download/",
+  //   }
+  // ],
   files: [
     "**/*",
     "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
