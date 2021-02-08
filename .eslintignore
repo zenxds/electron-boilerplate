@@ -1,2 +1,4 @@
 config
 main.js
+electron-builder.js
+update.js

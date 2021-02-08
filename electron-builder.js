@@ -29,9 +29,16 @@ module.exports = {
     "!config"
   ],
   mac: {
-    icon: 'icons/mac/icon.icns'
+    icon: './icons/mac/icon.icns'
   },
   win: {
-    icon: 'icons/win/icon.ico'
+    icon: './icons/win/icon.ico'
   },
+  nsis: {
+    oneClick: false,
+    perMachine: true,
+    allowToChangeInstallationDirectory: true,
+    installerIcon: "./icons/win/icon.ico",
+    uninstallerIcon: "./icons/win/icon.ico",
+  }
 }

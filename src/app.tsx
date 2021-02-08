@@ -8,6 +8,7 @@ import {
 
 import './less/antd.less'
 import './less/app.less'
+import './update'
 
 import paths from '@constants/paths'
 import Main from './containers/main'

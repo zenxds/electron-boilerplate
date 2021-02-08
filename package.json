@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "concurrently \"npm run build:dev\" \"npm run start:dev\"",
-    "start:dev": "cross-env ELECTRON_ENV=development DEBUG=* WEBPACK_PORT=9005 electron .",
+    "start:dev": "cross-env ELECTRON_ENV=development DEBUG=electron WEBPACK_PORT=9005 electron .",
     "build:dev": "cross-env BABEL_ENV=development webpack-dev-server -w --port 9005 --env=development",
     "build:prod": "cross-env BABEL_ENV=production webpack --progress --env=production",
     "icons": "electron-icon-builder --input=./src/icon.png --output=.",
@@ -20,6 +20,10 @@
   ],
   "author": "GitHub",
   "license": "CC0-1.0",
+  "autoUpdater": {
+    "enable": true,
+    "feedUrl": "http://127.0.0.1:9005/release"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "yarn prettier && yarn test"
@@ -90,6 +94,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "debug": "^4.1.1"
+    "debug": "^4.1.1",
+    "electron-updater": "^4.3.5"
   }
 }

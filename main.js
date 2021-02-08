@@ -2,6 +2,8 @@ const path = require('path')
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, Tray } = require('electron')
 
+require('./update')
+
 // 必须保持tray的引用，否则会被垃圾回收
 let tray = null
 
