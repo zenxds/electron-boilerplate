@@ -11,14 +11,16 @@ import './less/app.less'
 import './update'
 
 import paths from '@constants/paths'
+import Menu from '@components/Menu'
 import Main from './containers/main'
 
 export default class App extends Component {
   render(): ReactElement {
     return (
       <Router>
+        <Menu />
         <Switch>
-          <Route path={paths.main} component={Main} />
+          <Route path={paths.main} exact component={Main} />
         </Switch>
       </Router>
     )
