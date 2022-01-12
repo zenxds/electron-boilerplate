@@ -1,7 +1,6 @@
 import React, { Component, Fragment, ReactElement } from 'react'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Menu } from 'antd'
-import { ClickParam } from 'antd/lib/menu'
 
 import paths, { PathKeys } from '@constants/paths'
 
@@ -18,7 +17,7 @@ class AppMenu extends Component<RouteComponentProps, IState> {
     }
   }
 
-  handleClick = (e: ClickParam): void => {
+  handleClick = (e: any): void => {
     this.setState({
       current: e.key as PathKeys
     })

@@ -1,7 +1,9 @@
 const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
+const ESLintPlugin = require('eslint-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const DayjsWebpackPlugin = require('antd-dayjs-webpack-plugin')
 
 const rules = require('./webpack.rules')
 module.exports = {
@@ -12,7 +14,7 @@ module.exports = {
     filename: 'main.js'
   },
   target: 'electron-renderer',
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'inline-source-map',
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     modules: ['node_modules', 'src'],
@@ -27,7 +29,7 @@ module.exports = {
     rules: rules.concat([
       {
         test: /\.(js|ts)x?$/,
-        use: ['babel-loader', 'eslint-loader'],
+        use: ['babel-loader'],
         exclude: /node_modules/
       },
       {
@@ -37,8 +39,9 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
-              localIdentName: '[path][name]__[local]--[hash:base64:5]'
+              modules: {
+                localIdentName: '[path][name]__[local]--[hash:base64:5]',
+              },
             }
           }
         ]
@@ -51,15 +54,19 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
-              localIdentName: '[path][name]__[local]--[hash:base64:5]'
+              modules: {
+                localIdentName: '[path][name]__[local]--[hash:base64:5]'
+              },
             }
           },
           {
             loader: 'less-loader',
             options: {
-              relativeUrls: false,
-              javascriptEnabled: true
+              lessOptions: {
+                relativeUrls: false,
+                math: 'always',
+                javascriptEnabled: true
+              }
             }
           }
         ]
@@ -72,20 +79,19 @@ module.exports = {
           {
             loader: 'less-loader',
             options: {
-              javascriptEnabled: true
+              lessOptions: {
+                javascriptEnabled: true
+              }
             }
           }
         ]
-      },
-      {
-        test: /\.(png|jpe?g|gif|svg)$/,
-        use: 'url-loader?limit=8192&name=image/[hash].[ext]'
       }
     ])
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    new ESLintPlugin(),
     new ReactRefreshWebpackPlugin(),
+    new DayjsWebpackPlugin(),
     new webpack.ProvidePlugin({
       'React': 'react'
     }),
@@ -94,14 +100,30 @@ module.exports = {
     })
   ],
   devServer: {
-    contentBase: [
-      path.join(__dirname, '../dist'),
-      path.join(__dirname, '..')
+    static: [
+      {
+        directory: path.join(__dirname, '..'),
+      },
+      {
+        directory: path.join(__dirname, '../dist'),
+      }
     ],
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+      },
+    },
     hot: true,
     historyApiFallback: true,
     host: '0.0.0.0',
-    disableHostCheck: true
+    allowedHosts: 'all',
+    proxy: {
+      '/dev': {
+        target: '',
+        pathRewrite: { '^/dev': '' },
+      },
+    }
   }
 }
 

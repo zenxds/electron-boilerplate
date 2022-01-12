@@ -1,11 +1,11 @@
 // https://www.maizhiying.me/posts/2017/03/01/webpack-babel-ie8-support.html
 const path = require('path')
-const moment = require('moment')
+const dayjs = require('dayjs')
 const webpack = require('webpack')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin")
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
+const TerserPlugin = require("terser-webpack-plugin")
+const DayjsWebpackPlugin = require('antd-dayjs-webpack-plugin')
 
 const pkg = require('../package.json')
 const externals = {}
@@ -21,7 +21,10 @@ module.exports = {
   output: {
     path: path.join(__dirname, '../dist'),
     filename: 'main.js',
-    chunkFilename: '[name].[hash].js'
+    chunkFilename: '[name].[hash].js',
+    clean: {
+      keep: /vendor/
+    }
   },
   target: 'electron-renderer',
   externals: [
@@ -44,11 +47,20 @@ module.exports = {
     }
   },
   optimization: {
+    minimize: true,
     minimizer: [
-      new UglifyJsPlugin(),
-      new OptimizeCSSAssetsPlugin({}),
-      new webpack.BannerPlugin(`${moment().format('YYYY-MM-DD HH:mm:ss')}`)
-    ]
+      new webpack.BannerPlugin(`${dayjs().format('YYYY-MM-DD HH:mm:ss')}`),
+      new TerserPlugin({
+        parallel: true,
+        extractComments: false,
+        terserOptions: {
+          compress: {
+            drop_console: true
+          }
+        }
+      }),
+      new CssMinimizerPlugin(),
+    ],
   },
   module: {
     rules: rules.concat([{
@@ -63,8 +75,9 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
-              localIdentName: '[hash:base64]'
+              modules: {
+                localIdentName: '[hash:base64]'
+              },
             }
           }
         ]
@@ -77,21 +90,25 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
-              localIdentName: '[hash:base64]'
+              modules: {
+                localIdentName: '[hash:base64]'
+              },
             }
           },
           {
             loader: 'less-loader',
             options: {
-              relativeUrls: false
+              lessOptions: {
+                math: 'always',
+                relativeUrls: false
+              }
             }
           }
         ]
       },
       {
         test: /antd\.less$/,
-        loader: [
+        use: [
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
@@ -100,33 +117,25 @@ module.exports = {
           {
             loader: 'less-loader',
             options: {
-              relativeUrls: false,
-              javascriptEnabled: true
+              lessOptions: {
+                relativeUrls: false,
+                math: 'always',
+                javascriptEnabled: true
+              }
             }
           }
         ]
-      },
-      {
-        test: /\.(jpe?g|png|gif|svg)$/,
-        loader: 'url-loader',
-        options: {
-          // Inline files smaller than 10 kB (10240 bytes)
-          limit: 10 * 1024,
-          name: 'image/[hash].[ext]'
-        },
       }
     ])
   },
   plugins: [
-    new WebpackCleanupPlugin({
-      exclude: []
-    }),
     new webpack.DefinePlugin({
       API_SERVER_PLACEHOLDER: JSON.stringify('')
     }),
     new webpack.ProvidePlugin({
       'React': 'react'
     }),
+    new DayjsWebpackPlugin(),
     new MiniCssExtractPlugin({
       chunkFilename: '[name].[hash].css',
       filename: '[name].css'

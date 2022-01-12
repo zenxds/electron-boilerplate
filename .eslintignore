@@ -3,3 +3,4 @@ webpack.config.js
 electron-builder.js
 main.js
 update.js
+babel.config.js

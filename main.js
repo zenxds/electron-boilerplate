@@ -7,20 +7,24 @@ require('./update')
 // 必须保持tray的引用，否则会被垃圾回收
 let tray = null
 
-function createWindow () {
+function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 580,
     height: 500,
     icon: path.join(__dirname, 'icons/icon.png'),
     webPreferences: {
-      nodeIntegration: true
-    }
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
   })
 
   // and load the index.html of the app.
-  if (process.env.ELECTRON_ENV == "development") {
-    mainWindow.loadURL('http://0.0.0.0:' + (process.env.WEBPACK_PORT | 9005) + '/index.html')
+  if (process.env.ELECTRON_ENV == 'development') {
+    mainWindow.loadURL(
+      'http://0.0.0.0:' + (process.env.WEBPACK_PORT | 9005) + '/index.html',
+    )
   } else {
     mainWindow.loadFile('index.html')
   }

@@ -1,7 +1,8 @@
 # electron-app
 
 ```
-export ELECTRON_MIRROR=http://npm.taobao.org/mirrors/electron/
+# bash
+export ELECTRON_MIRROR=https://cdn.npm.taobao.org/dist/electron/
 ```
 
 ## dev
@@ -14,7 +15,7 @@ yarn start
 
 ```
 yarn build:prod
-yarn dist
+yarn pack:prod
 ```
 
 ## icons

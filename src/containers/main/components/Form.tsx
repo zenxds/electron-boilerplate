@@ -1,7 +1,7 @@
 import React, { Component, ReactElement, FormEvent } from 'react'
 import { inject, observer } from 'mobx-react'
 import { Form, Input, Button } from 'antd'
-import { FormComponentProps } from 'antd/lib/form/Form'
+import { FormInstance } from 'antd/es/form'
 
 const formItemLayout = {
   labelCol: {
@@ -21,38 +21,20 @@ const tailFormItemLayout = {
 
 @inject('store', 'actions')
 @observer
-class MainForm extends Component<Main.CommonProps & FormComponentProps> {
-  handleSubmit = (event: FormEvent): void => {
-    event.preventDefault()
+export default class MainForm extends Component<Main.CommonProps> {
+  formRef = React.createRef<FormInstance>()
 
-    const { form } = this.props
-    form.validateFields(
-      (err: boolean, values): void => {
-        if (err) {
-          return
-        }
-
-        console.log(values)
-      }
-    )
+  handleFinish = (values: any): void => {
+    console.log(values)
   }
 
   render(): ReactElement {
-    const { form, store } = this.props
-    const { getFieldDecorator } = form
+    const { store } = this.props
 
     return (
-      <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-        <Form.Item label="字段1">
-          {getFieldDecorator('field1', {
-            initialValue: undefined,
-            rules: [
-              {
-                required: true,
-                message: '请输入字段1'
-              }
-            ]
-          })(<Input />)}
+      <Form ref={this.formRef} {...formItemLayout} onFinish={this.handleFinish}>
+        <Form.Item label="字段1" name="field1" rules={[{ required: true }]}>
+          <Input />
         </Form.Item>
 
         <Form.Item {...tailFormItemLayout}>
@@ -68,5 +50,3 @@ class MainForm extends Component<Main.CommonProps & FormComponentProps> {
     )
   }
 }
-
-export default Form.create({ name: 'mainForm' })(MainForm)

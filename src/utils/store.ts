@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { remote, app } from 'electron'
+import { app } from 'electron'
 
 import { encrypt, decrypt } from './cfb'
 
@@ -17,7 +17,7 @@ export default class Store {
   private iv: string
 
   constructor(options: StoreOptions) {
-    const userDataPath = (remote.app || app).getPath('userData')
+    const userDataPath = app.getPath('userData')
 
     this.options = options
     this.path = path.join(userDataPath, options.name)

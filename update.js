@@ -8,33 +8,30 @@ if (process.env.ELECTRON_ENV === 'development' && config.enable) {
   autoUpdater.autoDownload = false
   autoUpdater.setFeedURL(config.feedUrl)
 
-  autoUpdater.on('error', function(error) {
+  autoUpdater.on('error', function (error) {
     sendUpdateMessage('error', error)
   })
 
   // message: UpdateInfo
-  autoUpdater.on('update-available', function(message) {
+  autoUpdater.on('update-available', function (message) {
     sendUpdateMessage('available', message)
   })
 
-  autoUpdater.on('download-progress', function(message) {
+  autoUpdater.on('download-progress', function (message) {
     sendUpdateMessage('progress', message)
   })
 
-  autoUpdater.on('update-downloaded', function(
-    event,
-    releaseNotes,
-    releaseName,
-    releaseDate,
-    updateUrl
-  ) {
-    sendUpdateMessage('downloaded', {
-      releaseNotes,
-      releaseName,
-      releaseDate,
-      updateUrl
-    })
-  })
+  autoUpdater.on(
+    'update-downloaded',
+    function (event, releaseNotes, releaseName, releaseDate, updateUrl) {
+      sendUpdateMessage('downloaded', {
+        releaseNotes,
+        releaseName,
+        releaseDate,
+        updateUrl,
+      })
+    },
+  )
 
   ipcMain.on('downloadUpdate', () => {
     autoUpdater.downloadUpdate()
@@ -44,7 +41,7 @@ if (process.env.ELECTRON_ENV === 'development' && config.enable) {
     autoUpdater.quitAndInstall()
   })
 
-  ipcMain.on("checkForUpdate", () => {
+  ipcMain.on('checkForUpdate', () => {
     autoUpdater.checkForUpdates()
   })
 

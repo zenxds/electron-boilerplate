@@ -5,12 +5,12 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { configure } from 'mobx'
 import { Provider } from 'mobx-react'
-import { LocaleProvider } from 'antd'
+import { ConfigProvider } from 'antd'
 import zhCN from 'antd/lib/locale-provider/zh_CN'
 
-import moment from 'moment'
-import 'moment/locale/zh-cn'
-moment.locale('zh-cn')
+import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'
+dayjs.locale('zh-cn')
 
 import App from './app'
 import injects from './inject'
@@ -20,9 +20,9 @@ configure({ enforceActions: 'always' })
 
 ReactDOM.render(
   <Provider {...injects}>
-    <LocaleProvider locale={zhCN}>
+    <ConfigProvider locale={zhCN}>
       <App />
-    </LocaleProvider>
+    </ConfigProvider>
   </Provider>,
   document.getElementById('app')
 )
