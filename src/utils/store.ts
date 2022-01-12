@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { app } from 'electron'
+import { ipcRenderer } from 'electron'
 
 import { encrypt, decrypt } from './cfb'
 
@@ -17,7 +17,7 @@ export default class Store {
   private iv: string
 
   constructor(options: StoreOptions) {
-    const userDataPath = app.getPath('userData')
+    const userDataPath = ipcRenderer.sendSync('getPath', 'userData')
 
     this.options = options
     this.path = path.join(userDataPath, options.name)

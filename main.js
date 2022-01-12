@@ -1,6 +1,6 @@
 const path = require('path')
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, Tray } = require('electron')
+const { app, BrowserWindow, Tray, ipcMain } = require('electron')
 
 require('./update')
 
@@ -74,4 +74,8 @@ app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
     app.quit()
   }
+})
+
+ipcMain.on('getPath', async (event, arg) => {
+  event.returnValue = app.getPath(arg)
 })
