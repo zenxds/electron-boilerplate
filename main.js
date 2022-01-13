@@ -65,6 +65,10 @@ app.whenReady().then(() => {
       toggleWindow()
     }
   })
+
+  ipcMain.on('getPath', async (event, arg) => {
+    event.returnValue = app.getPath(arg)
+  })
 })
 
 // Quit when all windows are closed.
@@ -74,8 +78,4 @@ app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
     app.quit()
   }
-})
-
-ipcMain.on('getPath', async (event, arg) => {
-  event.returnValue = app.getPath(arg)
 })
