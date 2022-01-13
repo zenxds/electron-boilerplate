@@ -10,15 +10,15 @@ interface StoreOptions {
   iv: string
 }
 
-export default class Store {
+const userDataPath = ipcRenderer.sendSync('getPath', 'userData')
+
+export default class EncryptStore {
   public options: StoreOptions
   public path: string
   private password: string
   private iv: string
 
   constructor(options: StoreOptions) {
-    const userDataPath = ipcRenderer.sendSync('getPath', 'userData')
-
     this.options = options
     this.path = path.join(userDataPath, options.name)
     this.password = options.password

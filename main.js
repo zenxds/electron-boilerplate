@@ -10,8 +10,8 @@ let tray = null
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 580,
-    height: 500,
+    width: 800,
+    height: 600,
     icon: path.join(__dirname, 'icons/icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),

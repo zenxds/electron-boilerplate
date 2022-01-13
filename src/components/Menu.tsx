@@ -31,7 +31,8 @@ class AppMenu extends Component<RouteComponentProps, IState> {
         <Menu
           onClick={this.handleClick}
           selectedKeys={[this.state.current]}
-          mode="horizontal"
+          mode="inline"
+          theme="dark"
         >
           <Menu.Item key="main">首页</Menu.Item>
         </Menu>

@@ -5,6 +5,7 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
+import { Layout } from 'antd'
 
 import './less/antd.less'
 import './less/app.less'
@@ -18,10 +19,16 @@ export default class App extends Component {
   render(): ReactElement {
     return (
       <Router>
-        <Menu />
-        <Switch>
-          <Route path={paths.main} exact component={Main} />
-        </Switch>
+        <Layout>
+          <Layout.Sider>
+            <Menu />
+          </Layout.Sider>
+          <Layout.Content>
+            <Switch>
+              <Route path={paths.main} exact component={Main} />
+            </Switch>
+          </Layout.Content>
+        </Layout>
       </Router>
     )
   }
