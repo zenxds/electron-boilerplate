@@ -14,6 +14,8 @@ function loadScript(url) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+  window.nodeRequire = require
+
   if (process.env.ELECTRON_ENV === 'development') {
     loadScript(
       'http://0.0.0.0:' + (process.env.WEBPACK_PORT || 9005) + '/main.js',

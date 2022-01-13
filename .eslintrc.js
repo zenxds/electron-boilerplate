@@ -15,10 +15,13 @@ module.exports = {
   extends: [
     'plugin:@typescript-eslint/recommended',
     'prettier',
-    'prettier/@typescript-eslint',
   ],
-  plugins: ['@typescript-eslint'],
+  plugins: [
+    'react',
+    '@typescript-eslint'
+  ],
   globals: {
+    nodeRequire: true,
     API_SERVER_PLACEHOLDER: true,
     __webpack_public_path__: true,
   },

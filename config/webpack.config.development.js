@@ -89,7 +89,10 @@ module.exports = {
     ])
   },
   plugins: [
-    new ESLintPlugin(),
+    new ESLintPlugin({
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      failOnError: true,
+    }),
     new ReactRefreshWebpackPlugin(),
     new DayjsWebpackPlugin(),
     new webpack.ProvidePlugin({
