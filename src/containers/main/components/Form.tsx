@@ -41,7 +41,7 @@ export default class MainForm extends Component<Main.CommonProps> {
           <Button
             type="primary"
             htmlType="submit"
-            loading={store.isLoading}
+            loading={store!.isLoading}
           >
             提交
           </Button>

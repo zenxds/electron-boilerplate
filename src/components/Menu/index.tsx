@@ -2,7 +2,7 @@ import React, { Component, Fragment, ReactElement } from 'react'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Menu } from 'antd'
 
-import { MenuItem, menus, parentMap, pathMap  } from './constants'
+import { MenuItem as IMenuItem, menus, parentMap, pathMap  } from './constants'
 
 interface IState {
   openKeys: string[]
@@ -27,7 +27,7 @@ class AppMenu extends Component<RouteComponentProps, IState> {
     const { pathname } = this.props.location
 
     let ret: string = pathname
-    pathMap.forEach((item: MenuItem, key: string) => {
+    pathMap.forEach((item: IMenuItem, key: string) => {
       if (pathname.startsWith(key)) {
         ret = key
       }
@@ -67,7 +67,7 @@ class AppMenu extends Component<RouteComponentProps, IState> {
     })
   }
 
-  renderMenu(menus: MenuItem[] = []): ReactElement[] {
+  renderMenu(menus: IMenuItem[] = []): ReactElement[] {
     return menus.map(menu => {
       if (menu.children && menu.children.length) {
         return (

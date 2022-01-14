@@ -87,7 +87,7 @@
     "less-loader": "^10.2.0",
     "mini-css-extract-plugin": "^2.4.6",
     "mobx": "5",
-    "mobx-react": "5",
+    "mobx-react": "6",
     "postcss-less": "^6.0.0",
     "prettier": "^2.5.1",
     "react": "^17.0.1",
@@ -100,8 +100,7 @@
     "url-loader": "^4.1.1",
     "webpack": "^5.66.0",
     "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.7.3",
-    "webpack-node-externals": "^3.0.0"
+    "webpack-dev-server": "^4.7.3"
   },
   "dependencies": {
     "electron-updater": "^4.3.5"
