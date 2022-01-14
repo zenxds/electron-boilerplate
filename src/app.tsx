@@ -6,7 +6,8 @@ import {
   Route,
   Redirect
 } from 'react-router-dom'
-import { Layout } from 'antd'
+import { Layout, Spin } from 'antd'
+import loadable from '@loadable/component'
 
 import './less/antd.less'
 import './less/app.less'
@@ -14,7 +15,16 @@ import './update'
 
 import paths from '@constants/paths'
 import Menu from '@components/Menu'
-import Main from './containers/main'
+
+function load(page: string) {
+  return loadable(() => import(`./containers/${page}`), {
+    fallback: (
+      <Spin>
+        <div className="container"></div>
+      </Spin>
+    ),
+  })
+}
 
 export default class App extends Component {
   render(): ReactElement {
@@ -26,7 +36,7 @@ export default class App extends Component {
           </Layout.Sider>
           <Layout.Content>
             <Switch>
-              <Route path={paths.main} exact component={Main} />
+              <Route path={paths.main} exact component={load('main')} />
               <Route path="/" exact>
                 <Redirect to={paths.main} />
               </Route>
