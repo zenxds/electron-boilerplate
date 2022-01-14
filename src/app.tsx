@@ -3,7 +3,8 @@ import {
   // BrowserRouter as Router
   HashRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from 'react-router-dom'
 import { Layout } from 'antd'
 
@@ -26,6 +27,9 @@ export default class App extends Component {
           <Layout.Content>
             <Switch>
               <Route path={paths.main} exact component={Main} />
+              <Route path="/" exact>
+                <Redirect to={paths.main} />
+              </Route>
             </Switch>
           </Layout.Content>
         </Layout>

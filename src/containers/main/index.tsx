@@ -17,7 +17,7 @@ import './less/styles.less'
 class Main extends Component<Main.CommonProps> {
   render(): ReactElement {
     return (
-      <div styleName="container">
+      <div className="container">
         <Form />
       </div>
     )
