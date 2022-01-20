@@ -22,8 +22,7 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "autoUpdater": {
-    "enable": false,
-    "feedUrl": "http://127.0.0.1:9005/release"
+    "enable": false
   },
   "config": {
     "commitizen": {
