@@ -18,7 +18,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   if (process.env.ELECTRON_ENV === 'development') {
     loadScript(
-      'http://0.0.0.0:' + (process.env.WEBPACK_PORT || 9005) + '/main.js',
+      'http://127.0.0.1:' + (process.env.WEBPACK_PORT || 9005) + '/main.js',
     )
   } else {
     loadCss('./dist/main.css', function () {

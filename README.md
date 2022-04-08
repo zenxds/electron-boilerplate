@@ -2,7 +2,7 @@
 
 ```
 # bash
-export ELECTRON_MIRROR=https://cdn.npm.taobao.org/dist/electron/
+export ELECTRON_MIRROR=https://cdn.npmmirror.com/binaries/electron/
 ```
 
 ## dev

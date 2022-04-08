@@ -1,9 +1,11 @@
 const path = require('path')
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, Tray, ipcMain } = require('electron')
+const { app, BrowserWindow, Tray, Menu, ipcMain } = require('electron')
 
 require('./update')
 
+const autoStart = require('./autoStart')
+const isDev = process.env.ELECTRON_ENV == 'development'
 // 必须保持tray的引用，否则会被垃圾回收
 let tray = null
 
@@ -22,9 +24,9 @@ function createWindow() {
   })
 
   // and load the index.html of the app.
-  if (process.env.ELECTRON_ENV == 'development') {
+  if (isDev) {
     mainWindow.loadURL(
-      'http://0.0.0.0:' + (process.env.WEBPACK_PORT | 9005) + '/index.html',
+      'http://127.0.0.1:' + (process.env.WEBPACK_PORT | 9005) + '/index.html',
     )
   } else {
     mainWindow.loadFile('index.html')
@@ -41,16 +43,48 @@ function toggleWindow() {
   }
 
   if (mainWindow.isVisible()) {
-    mainWindow.hide()
+    mainWindow.isFocused() ? mainWindow.hide() : mainWindow.show()
   } else {
     mainWindow.show()
   }
 }
 
 function createTray() {
-  tray = new Tray(path.join(__dirname, 'icons/png/16x16.png'))
+  if (!tray) {
+    tray = new Tray(path.join(__dirname, 'icons/tray/tray.png'))
+  }
 
-  tray.on('click', toggleWindow)
+  const template = [
+    {
+      label: '切换窗口',
+      click: () => {
+        toggleWindow()
+      },
+    },
+    {
+      label: '开机启动',
+      type: 'checkbox',
+      checked: !!autoStart.getOpenAtLogin(),
+      click() {
+        const openAtLogin = autoStart.getOpenAtLogin()
+
+        if (openAtLogin) {
+          autoStart.remove()
+        } else {
+          autoStart.set()
+        }
+      }
+    },
+    {
+      label: '退出',
+      click: () => {
+        app.exit()
+      },
+    },
+  ]
+
+  const contextMenu = Menu.buildFromTemplate(template)
+  tray.setContextMenu(contextMenu)
 }
 
 app.whenReady().then(() => {
