@@ -24,13 +24,7 @@ function createWindow() {
   })
 
   // and load the index.html of the app.
-  if (isDev) {
-    mainWindow.loadURL(
-      'http://127.0.0.1:' + (process.env.WEBPACK_PORT | 9005) + '/index.html',
-    )
-  } else {
-    mainWindow.loadFile('index.html')
-  }
+  mainWindow.loadFile('index.html')
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
